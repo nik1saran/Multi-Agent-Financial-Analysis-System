@@ -64,10 +64,11 @@ $env:KAGGLE_FINANCIAL_NEWS_CSV = "C:\path\to\financial_news.csv"
 
 ### NewsAPI.org
 
-NewsAPI is optional. Only set this environment variable if you have your own NewsAPI key and want the notebook to pull live news. Do not commit real API keys to GitHub.
+NewsAPI is optional. Only set this environment variable,  and can be used to have the notebook to pull live news. 
+NOTE: Do not commit real API keys to GitHub.
 
 ```powershell
-$env:NEWSAPI_KEY = "your_api_key_here"
+$env:NEWSAPI_KEY = "*******"
 ```
 
 ## ipynb file

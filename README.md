@@ -64,8 +64,6 @@ Set your NewsAPI key:
 $env:NEWSAPI_KEY = "your_api_key_here"
 ```
 
-## How to Run
-
-Open the notebook in Jupyter, VS Code, or Google Colab and run all cells from top to bottom.
+## ipynb file
 
 The final output is a structured financial news brief summarizing article classes, sentiment, tickers, catalysts, and risks.

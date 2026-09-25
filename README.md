@@ -12,6 +12,8 @@ Ingest News -> Preprocess -> Classify -> Extract -> Summarize
 
 This version focuses only on the prompt-chaining requirement from the larger agentic AI project. It shows how financial news can move through multiple specialized processing stages, where each stage transforms the output for the next stage.
 
+The project is complete and runnable without paid APIs. It includes a bundled sample CSV dataset at `data/sample_financial_news.csv`. NewsAPI.org and Kaggle CSV imports are optional ways to replace the bundled data with live or larger datasets.
+
 ## Tools
 
 - Python / Jupyter Notebook
@@ -46,7 +48,11 @@ This version focuses only on the prompt-chaining requirement from the larger age
 
 ## Optional Data Sources
 
-The notebook runs without credentials using sample data, but it also supports real data:
+The notebook runs without credentials using the included CSV file:
+
+- `data/sample_financial_news.csv`
+
+It also supports optional external data sources if you want to replace the included sample data.
 
 ### Kaggle CSV
 
@@ -58,7 +64,7 @@ $env:KAGGLE_FINANCIAL_NEWS_CSV = "C:\path\to\financial_news.csv"
 
 ### NewsAPI.org
 
-Set your NewsAPI key:
+NewsAPI is optional. Only set this environment variable if you have your own NewsAPI key and want the notebook to pull live news. Do not commit real API keys to GitHub.
 
 ```powershell
 $env:NEWSAPI_KEY = "your_api_key_here"

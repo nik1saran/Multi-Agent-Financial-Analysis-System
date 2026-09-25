@@ -17,9 +17,9 @@ This version focuses only on the prompt-chaining requirement from the larger age
 - Python / Jupyter Notebook
 - NewsAPI.org for live financial news ingestion
 - Kaggle Financial News Dataset via CSV import
-- Prompt chaining workflow: Ingest -> Preprocess -> Classify -> Extract -> Summarize
+- Prompt chaining workflow: Ingest → Preprocess → Classify → Extract → Summarize
 - Rule-based classifier and extractor for offline reproducibility
-- Memory/Data storage: CSV input and JSON-style structured outputs
+- Memory/Data storage: CSV input + JSON-style structured outputs
 - Colab or local Jupyter for execution
 - GitHub for submission/version control
 

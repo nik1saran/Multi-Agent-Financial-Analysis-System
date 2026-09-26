@@ -59,6 +59,15 @@ The notebook implements:
 Ingest News → Preprocess → Classify → Extract → Summarize
 ```
 
+The prompt-chaining section is built end to end with no missing stage. It now includes:
+
+- Bundled CSV news data for reproducible runs
+- Optional live Yahoo Finance RSS ingestion for real-news testing without an API key
+- Optional NewsAPI.org and Kaggle CSV ingestion
+- Stage-by-stage memory logging to `memory/prompt_chain_memory.jsonl`
+- A final prompt-chain report table showing stage status, counts, classes, tickers, sentiment, and summary length
+- Assertions that test the full chain against real Yahoo Finance RSS headlines
+
 ### 2. Routing
 
 After extraction, each article is routed to a specialist analyzer:

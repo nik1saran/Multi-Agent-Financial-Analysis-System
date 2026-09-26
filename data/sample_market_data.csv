@@ -1,0 +1,6 @@
+ticker,company,current_price,previous_close,one_month_return,average_volume,market_cap,trailing_pe,source
+NVDA,Nvidia,178.25,174.10,0.082,41200000,4350000000000,49.8,bundled_sample
+AAPL,Apple,246.80,249.20,-0.018,52100000,3660000000000,32.1,bundled_sample
+JPM,JPMorgan Chase,301.45,296.90,0.041,9400000,835000000000,13.6,bundled_sample
+TSLA,Tesla,429.10,438.30,-0.064,88200000,1370000000000,71.4,bundled_sample
+MSFT,Microsoft,517.35,512.80,0.036,21600000,3840000000000,38.9,bundled_sample

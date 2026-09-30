@@ -23,7 +23,8 @@ The project is complete and runnable without paid APIs. It includes bundled CSV 
 - Prompt chaining workflow: Ingest → Preprocess → Classify → Extract → Summarize
 - Routing workflow: direct each article to an earnings, macro, market, or company-news specialist
 - Evaluator-Optimizer workflow: score generated analysis and refine weak outputs
-- Rule-based classifier and extractor for offline reproducibility
+- LLM-agent classifier, extractor, router, analyst, evaluator, optimizer, and summarizer
+- Deterministic fallbacks for offline reproducibility when no LLM API key is available
 - Memory/Data storage: CSV input + JSON-style structured outputs
 - Colab or local Jupyter for execution
 - GitHub for submission/version control
@@ -59,7 +60,7 @@ The notebook implements:
 Ingest News → Preprocess → Classify → Extract → Summarize
 ```
 
-The prompt-chaining section is built end to end with no missing stage. It now includes:
+The prompt-chaining section is built end to end with no missing stage. Its decision stages are designed to use LLM agents when an API key is available, with deterministic fallbacks so the notebook still runs for grading. It now includes:
 
 - Bundled CSV news data for reproducible runs
 - Optional live Yahoo Finance RSS ingestion for real-news testing without an API key
@@ -67,6 +68,7 @@ The prompt-chaining section is built end to end with no missing stage. It now in
 - Stage-by-stage memory logging to `memory/prompt_chain_memory.jsonl`
 - A final prompt-chain report table showing stage status, counts, classes, tickers, sentiment, and summary length
 - Assertions that test the full chain against real Yahoo Finance RSS headlines
+- LLM-agent prompts for classification, signal extraction, and summarization
 
 ### 2. Routing
 
@@ -80,6 +82,26 @@ After extraction, each article is routed to a specialist analyzer:
 ### 3. Evaluator-Optimizer
 
 The notebook generates an initial analysis, evaluates it for completeness and grounding, and then refines the output with missing details such as tickers, catalysts, risks, and market context.
+
+The evaluator-optimizer stage is also LLM-agent based when credentials are available. If no key is configured, the notebook uses transparent fallback scoring so the workflow remains executable.
+
+## LLM Configuration
+
+The notebook supports OpenAI-compatible and Anthropic model calls through environment variables. Do not commit real API keys to GitHub.
+
+```powershell
+$env:OPENAI_API_KEY = "your_key_here"
+$env:OPENAI_MODEL = "gpt-4o-mini"
+```
+
+or:
+
+```powershell
+$env:ANTHROPIC_API_KEY = "your_key_here"
+$env:ANTHROPIC_MODEL = "claude-3-5-haiku-latest"
+```
+
+Without these keys, the notebook clearly marks outputs as `deterministic_fallback`.
 
 ## Optional Data Sources
 

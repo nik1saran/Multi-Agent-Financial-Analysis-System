@@ -1,6 +1,6 @@
 # Multi-Agent Financial Analysis System
 
-This project implements an agentic AI financial news analysis system using the three required workflow patterns: **Prompt Chaining**, **Routing**, and **Evaluator-Optimizer**.
+This project implements an agentic AI financial news analysis system using the three required workflow patterns: **Prompt Chaining**, **Routing**, and **Evaluator-Optimizer**. It also has the four agent functions: **Planning**, **Tool Use**, **Self-Reflection**, and **Learning/Memory** across runs.
 
 The notebook starts with a focused prompt chain:
 
@@ -10,22 +10,25 @@ Ingest News -> Preprocess -> Classify -> Extract -> Summarize
 
 ## Project Scope
 
-This version covers the workflow-pattern portion of the larger agentic AI project. It shows how financial news moves through a prompt chain, how extracted content is routed to specialist analyzers, and how generated analysis is evaluated and refined.
+This project is an Investment Research Agent for stock symbols. It shows how financial news moves through a prompt chain, how extracted content is routed to specialist analyzers, and how generated analysis is evaluated and refined. A planner decides which steps to run for each symbol, the agent reflects on its own work, and it saves notes and lessons that the next run reads.
 
-The project is complete and runnable without paid APIs. It includes bundled CSV datasets at `data/sample_financial_news.csv` and `data/sample_market_data.csv`. NewsAPI.org, Kaggle CSV imports, and `yfinance` are optional ways to replace the bundled data with live or larger datasets.
+The notebook is made for Google Colab and uses Claude through the Anthropic API. It also runs without paid APIs. It includes bundled CSV datasets at `data/sample_financial_news.csv` and `data/sample_market_data.csv`, and each LLM step falls back to a rule-based version if no key is set. NewsAPI.org, Yahoo Finance RSS, and `yfinance` give live news and market data.
 
 ## Tools
 
 - Python / Jupyter Notebook
-- NewsAPI.org for live financial news ingestion
-- Kaggle Financial News Dataset via CSV import
-- yfinance for stock price and market context
+- NewsAPI.org for live financial news ingestion (finance sites only)
+- Yahoo Finance RSS for headlines about one stock symbol
+- yfinance for stock price, one-month return, volume, market cap and P/E
+- LangChain (langchain-anthropic) and LangGraph for the evaluator-optimizer loop
 - Prompt chaining workflow: Ingest → Preprocess → Classify → Extract → Summarize
 - Routing workflow: direct each article to an earnings, macro, market, or company-news specialist
 - Evaluator-Optimizer workflow: score generated analysis and refine weak outputs
 - LLM-agent classifier, extractor, router, analyst, evaluator, optimizer, and summarizer
 - Deterministic fallbacks for offline reproducibility when no LLM API key is available
-- Memory/Data storage: CSV input + JSON-style structured outputs
+- Planning: the agent picks and orders its research steps for each symbol
+- Self-reflection: the agent reviews its evaluation results and saves lessons
+- Memory/Data storage: CSV input + JSON-style structured outputs, plus notes and lessons saved between runs
 - Colab or local Jupyter for execution
 - GitHub for submission/version control
 
@@ -36,7 +39,7 @@ The project is complete and runnable without paid APIs. It includes bundled CSV 
 ## Workflow Stages
 
 1. **Ingest News**  
-   Loads financial news from a Kaggle-style CSV, NewsAPI.org, or built-in sample data.
+   Loads financial news from NewsAPI.org, Yahoo Finance RSS, the bundled CSV, or built-in sample data.
 
 2. **Preprocess**  
    Cleans text, removes HTML/URLs, normalizes whitespace, and deduplicates articles.
@@ -64,7 +67,7 @@ The prompt-chaining section is built end to end with no missing stage. Its decis
 
 - Bundled CSV news data for reproducible runs
 - Optional live Yahoo Finance RSS ingestion for real-news testing without an API key
-- Optional NewsAPI.org and Kaggle CSV ingestion
+- NewsAPI.org ingestion limited to finance sites
 - Stage-by-stage memory logging to `memory/prompt_chain_memory.jsonl`
 - A final prompt-chain report table showing stage status, counts, classes, tickers, sentiment, and summary length
 - Assertions that test the full chain against real Yahoo Finance RSS headlines
@@ -83,29 +86,42 @@ After extraction, each article is routed to a specialist analyzer:
 
 The notebook generates an initial analysis, evaluates it for completeness and grounding, and then refines the output with missing details such as tickers, catalysts, risks, and market context.
 
-The evaluator-optimizer stage is also LLM-agent based when credentials are available. If no key is configured, the notebook uses transparent fallback scoring so the workflow remains executable.
+The evaluator-optimizer stage is also LLM-agent based when credentials are available. If no key is configured, the notebook uses transparent fallback scoring so the workflow remains executable. The loop is a LangGraph graph that stops when an analysis passes or after the round limit.
+
+## Agent Functions
+
+- **Planning:** a planner picks which tools to run for a symbol and in what order, and re-plans if something is missing (for example, no news found).
+- **Tool Use:** the agent chooses between news sources, market data, the prompt chain, routing, the evaluator-optimizer, and memory.
+- **Self-Reflection:** after the evaluator-optimizer runs, the agent looks at its own scores and feedback and writes lessons.
+- **Learning/Memory:** notes and lessons are saved to the `memory/` folder and read back on the next run.
+
+Section 10 of the notebook runs all of this together for one symbol.
+
+## Memory
+
+The agent writes to the `memory/` folder:
+
+- `research_notes.jsonl`: one short note per stock, plus an open question
+- `evaluator_lessons.jsonl`: lessons from self-reflection, with average scores for each run
+- `prompt_chain_memory.jsonl`: a log of each prompt-chain stage
+
+Colab deletes this folder when the runtime resets. To see the second run use what the first one saved, run the notebook again in the same session without restarting the runtime.
 
 ## LLM Configuration
 
-The notebook supports OpenAI-compatible and Anthropic model calls through environment variables. Do not commit real API keys to GitHub.
+The notebook uses Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) through the Anthropic API. In Colab, add a secret named `ANTHROPIC_API_KEY` and turn on Notebook access. The first code cell reads it.
 
-```powershell
-$env:OPENAI_API_KEY = "your_key_here"
-$env:OPENAI_MODEL = "gpt-4o-mini"
-```
-
-or:
+Running locally, you can set it as an environment variable instead:
 
 ```powershell
 $env:ANTHROPIC_API_KEY = "your_key_here"
-$env:ANTHROPIC_MODEL = "claude-3-5-haiku-latest"
 ```
 
 Without these keys, the notebook clearly marks outputs as `deterministic_fallback`.
 
 ## Optional Data Sources
 
-The notebook runs without credentials using the included CSV file:
+The notebook runs without credentials using the included CSV files:
 
 - `data/sample_financial_news.csv`
 - `data/sample_market_data.csv`
@@ -122,23 +138,14 @@ pip install -r requirements.txt
 
 If `yfinance` is unavailable or cannot reach live data, the notebook automatically uses the bundled market-data CSV.
 
-### Kaggle CSV
+### Yahoo Finance RSS
 
-Set an environment variable pointing to your downloaded financial news CSV:
-
-```powershell
-$env:KAGGLE_FINANCIAL_NEWS_CSV = "C:\path\to\financial_news.csv"
-```
+No key needed. Used for headlines about one stock symbol.
 
 ### NewsAPI.org
 
-NewsAPI is optional. Only set this environment variable,  and can be used to have the notebook to pull live news. 
-NOTE: Do not commit real API keys to GitHub.
+In Colab, add a secret named `NEWSAPI_KEY` and turn on Notebook access. The notebook then pulls live news from finance sites. Without it, the notebook uses Yahoo Finance RSS or the bundled CSV.
 
 ```powershell
 $env:NEWSAPI_KEY = "*******"
 ```
-
-## ipynb file
-
-The final output is a structured financial news brief summarizing article classes, sentiment, tickers, catalysts, risks, routed specialists, market context, and evaluator-optimizer refinements.

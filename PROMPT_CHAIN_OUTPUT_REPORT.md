@@ -41,14 +41,14 @@ Compact financial context used later by routing and evaluator-optimizer workflow
 
 Specialist analysis, evaluator score, and source tracking.
 
-|Specialist|Score|Analysis Source|Evaluation Source|Feedback|Headline|
-|---|---|---|---|---|---|
-|market_analyzer|1|deterministic_fallback|deterministic_fallback|Analysis is complete and grounded.|Nvidia shares rise as analysts lift AI chip revenue forecasts|
-|company_news_analyzer|1|deterministic_fallback|deterministic_fallback|Analysis is complete and grounded.|Apple faces pressure after supplier report points to slower iPhone orders|
-|earnings_analyzer|1|deterministic_fallback|deterministic_fallback|Analysis is complete and grounded.|JPMorgan earnings beat estimates as net interest income remains resilient|
-|macro_analyzer|1|deterministic_fallback|deterministic_fallback|Analysis is complete and grounded.|Fed officials signal caution on rate cuts as inflation progress slows|
-|market_analyzer|1|deterministic_fallback|deterministic_fallback|Analysis is complete and grounded.|Tesla stock falls after margin concerns offset delivery growth|
-|market_analyzer|1|deterministic_fallback|deterministic_fallback|Analysis is complete and grounded.|Microsoft gains as cloud demand supports enterprise software outlook|
+|Specialist|Score|Analysis Source|Evaluation Source|Rounds|Feedback|Headline|
+|---|---|---|---|---|---|---|
+|market_analyzer|1|deterministic_fallback|deterministic_fallback|1|Analysis is complete and grounded.|Nvidia shares rise as analysts lift AI chip revenue forecasts|
+|company_news_analyzer|1|deterministic_fallback|deterministic_fallback|1|Analysis is complete and grounded.|Apple faces pressure after supplier report points to slower iPhone orders|
+|earnings_analyzer|1|deterministic_fallback|deterministic_fallback|1|Analysis is complete and grounded.|JPMorgan earnings beat estimates as net interest income remains resilient|
+|macro_analyzer|1|deterministic_fallback|deterministic_fallback|1|Analysis is complete and grounded.|Fed officials signal caution on rate cuts as inflation progress slows|
+|market_analyzer|1|deterministic_fallback|deterministic_fallback|1|Analysis is complete and grounded.|Tesla stock falls after margin concerns offset delivery growth|
+|market_analyzer|1|deterministic_fallback|deterministic_fallback|1|Analysis is complete and grounded.|Microsoft gains as cloud demand supports enterprise software outlook|
 
 ## Prompt Chain Final Brief
 
@@ -82,23 +82,23 @@ Real-news prompt-chain test passed
 Financial News Prompt-Chain Brief
 ====================================
 Articles analyzed: 10
-Content mix: {'market_movement': 6, 'general_financial_news': 4}
-Sentiment mix: {'neutral': 8, 'positive': 2}
-Most mentioned tickers: {'NVDA': 2, 'TSLA': 2, 'AMZN': 1, 'SNPS': 1, 'AAPL': 1}
-Leading catalysts: none detected
-Leading risks: none detected
+Content mix: {'market_movement': 4, 'macro': 1, 'general_financial_news': 3, 'earnings': 2}
+Sentiment mix: {'neutral': 9, 'positive': 1}
+Most mentioned tickers: {'AAPL': 4, 'NVDA': 2, 'MSFT': 2, 'TSLA': 1, 'IRR': 1}
+Leading catalysts: {'earnings': 1, 'cloud': 1}
+Leading risks: {'lawsuit': 1}
 
 Key article-level takeaways:
-- Amazon Signs $1 Billion Synopsys Deal as AWS Steps Up Nvidia Challenge | class=general_financial_news | tickers=AMZN, NVDA, SNPS | sentiment=positive | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- Meta Platforms Is Making a Push Into AI Hardware. History Says Apple Investors Shouldn't Worry. | class=general_financial_news | tickers=AAPL, META | sentiment=positive | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- Why Corning Stock Is Falling Today | class=market_movement | tickers=broad market | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- AI spending will fuel wins for Micron, Nvidia, Intel, and other chip stocks: BofA analyst | class=market_movement | tickers=NVDA | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- 3 Robotics Stocks to Buy That Aren't Tesla | class=market_movement | tickers=TSLA | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- The SEC Just Granted a Temporary Innovation Exemption For Tokenized Stock Trading. Here's What That Means For the Average Investor. | class=market_movement | tickers=broad market | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- Which Automaker Stock Dominated in September: Tesla, Ford, or General Motors? | class=market_movement | tickers=TSLA | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- 3 Reasons Johnson & Johnson Is Still a Buy With Its Stock Near a Record High | class=market_movement | tickers=broad market | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- Cannabis Investors Were Betting On Washington, Then Washington Hit Pause | class=general_financial_news | tickers=broad market | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
-- FTC Reportedly Probes OpenAI and Anthropic as Trump Backs AI Self-Regulation | class=general_financial_news | tickers=broad market | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- I Just Invested $4,600 Across 3 Top Dividend Stocks. Here’s What I’m Loading Up on Right Now. | class=market_movement | tickers=broad market | sentiment=positive | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- UBS resets Microsoft stock price target for investors | class=market_movement | tickers=MSFT, UBS | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- $10,000 Invested in Apple Could Be Worth This Much by 2031 | class=market_movement | tickers=AAPL | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- Tesla Just Won in Court: Self-Driving Buyers Can’t Sue as a Class | class=macro | tickers=TSLA | sentiment=neutral | catalysts=no explicit catalyst | risks=lawsuit | implication=Signal extracted with deterministic fallback.
+- Apple’s $1,999 Foldable iPhone Sold Out in Minutes. Deliveries Now Slip to January | class=earnings | tickers=AAPL | sentiment=neutral | catalysts=earnings | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- Apple Hit a Record Close Ahead of Its November 2 Report. Here’s What Charging for Extra Siri AI Could Mean for the Stock | class=market_movement | tickers=AAPL, IRR | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- Here's How Microsoft's $175 Billion in Capital Expenditures Is Hurting Its Business | class=earnings | tickers=MSFT | sentiment=neutral | catalysts=cloud | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- Martin Shkreli Says New Photonic Chips Could Run Circles Around Nvidia | class=general_financial_news | tickers=NVDA | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- Apple, Nvidia each gave $25M to Trump's White House ballroom — but the president's own name is nowhere on the donor list | class=general_financial_news | tickers=AAPL, NVDA | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
+- Here's What $10,000 Invested in Broadcom Will Be Worth by 2028 | class=general_financial_news | tickers=AVGO | sentiment=neutral | catalysts=no explicit catalyst | risks=no major risk term | implication=Signal extracted with deterministic fallback.
 
 Decision source: deterministic_fallback (summarization_agent)
 ```
